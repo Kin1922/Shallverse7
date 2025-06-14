@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kintrovert</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #1c1b2f;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .page {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: scale(0);
+      animation: zoomText 0.8s ease forwards;
+    }
+
+    @keyframes zoomText {
+      from {
+        transform: scale(0.2);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #7c4dff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #btnWrapper {
+      position: relative;
+      width: 250px;
+      height: 100px;
+      margin: 0 auto;
+    }
+
+    #tidak, #iya {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #tidak {
+      left: 0;
+      transition: all 0.3s ease;
+    }
+
+    #iya {
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page active" id="page1">
+    <h1>Selamat datang di web kintrovert</h1>
+    <button class="btn" onclick="nextPage()">Lanjut</button>
+  </div>
+
+  <div class="page" id="page2">
+    <h1>Sebenarnya aku mau cerita sama kamu...</h1>
+    <button class="btn" onclick="nextPage()">Lanjut</button>
+  </div>
+
+  <div class="page" id="page3">
+    <h1 id="judul">Kamu mau gak jadi pacarku?</h1>
+    <div id="btnWrapper">
+      <button class="btn" id="tidak" onclick="lari()">Tidak</button>
+      <button class="btn" id="iya" onclick="jawab()">Iya</button>
+    </div>
+  </div>
+
+  <script>
+    let currentPage = 1;
+
+    function nextPage() {
+      document.getElementById(`page${currentPage}`).classList.remove("active");
+      currentPage++;
+      document.getElementById(`page${currentPage}`).classList.add("active");
+    }
+
+    function jawab() {
+      alert("Yay! Aku senang banget! ❤️");
+    }
+
+    let posisi = 0;
+
+    function lari() {
+      const tidak = document.getElementById("tidak");
+      const wrapper = document.getElementById("btnWrapper");
+
+      const tengahX = wrapper.offsetWidth / 2 - tidak.offsetWidth / 2;
+      const tengahY = wrapper.offsetHeight / 2 - tidak.offsetHeight / 2;
+
+      const jarak = 40;
+      let x = tengahX, y = tengahY;
+
+      switch (posisi) {
+        case 0: // atas
+          x = tengahX;
+          y = tengahY - jarak;
+          break;
+        case 1: // kanan
+          x = tengahX + jarak;
+          y = tengahY;
+          break;
+        case 2: // bawah
+          x = tengahX;
+          y = tengahY + jarak;
+          break;
+        case 3: // kiri
+          x = tengahX - jarak;
+          y = tengahY;
+          break;
+        default:
+          x = 0;
+          y = tengahY;
+      }
+
+      tidak.style.left = x + "px";
+      tidak.style.top = y + "px";
+
+      posisi = (posisi + 1) % 4;
+    }
+  </script>
+</body>
+</html>
